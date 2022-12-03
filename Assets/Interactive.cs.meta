@@ -6,6 +6,7 @@ MonoImporter:
   defaultReferences:
   - mTranslationHandle: {fileID: 8259612287919338886, guid: c8fd2e32751959f469f6f68c74ffee7b, type: 3}
   - mRotationHandle: {fileID: 8259612287919338886, guid: c8fd2e32751959f469f6f68c74ffee7b, type: 3}
+  - mScaleHandle: {fileID: 8446195237788676508, guid: 58d2cd785bce88c44b2a018a316022b8, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

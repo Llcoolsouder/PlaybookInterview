@@ -6,6 +6,7 @@ public class Interactive : MonoBehaviour
 {
     [SerializeField] private Handle mTranslationHandle;
     [SerializeField] private Handle mRotationHandle;
+    [SerializeField] private Handle mScaleHandle;
 
     // Start is called before the first frame update
     void Start()
@@ -18,12 +19,21 @@ public class Interactive : MonoBehaviour
         foreach (var parameter in parameters)
         {
             Quaternion rotation = Quaternion.LookRotation(parameter.forward, parameter.up);
-            GameObject handle = Object.Instantiate(
+            
+            GameObject translationHandle = Object.Instantiate(
                 mTranslationHandle.gameObject,
                 transform.position + parameter.forward,
                 rotation,
                 transform);
-            handle.GetComponent<Handle>().SetColor(parameter.color);
+            translationHandle.GetComponent<Handle>().SetColor(parameter.color);
+
+            GameObject scaleHandle = Object.Instantiate(
+                mScaleHandle.gameObject,
+                transform.position + (parameter.forward * 0.75f),
+                rotation,
+                transform);
+            scaleHandle.GetComponent<Handle>().SetColor(parameter.color);
+
         }
     }
 

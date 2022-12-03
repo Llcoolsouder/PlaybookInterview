@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Renderer))]
 public abstract class Handle : MonoBehaviour
 {
+    protected GameObject mSubject;
     protected Vector3 mMousePreviousPosition;
 
     /**
@@ -22,6 +23,23 @@ public abstract class Handle : MonoBehaviour
     {
         Material material = gameObject.GetComponent<Renderer>().material;
         material.color = color;
+    }
+    
+    /// <returns>Size of pixel at parent's distance from camera</return>
+    public float GetPixelSize()
+    {
+        float distance = (Camera.main.transform.position - transform.position).magnitude;
+        float frustumHeight = 2.0f * distance * Mathf.Tan(Camera.main.fieldOfView * 0.5f * Mathf.Deg2Rad);
+        return frustumHeight / Camera.main.pixelHeight;
+    }
+
+    protected virtual void Start() {
+        foreach (Transform child in transform.parent) {
+            if (child.GetComponent<Handle>() == null) {
+                mSubject = child.gameObject;
+            }
+            Debug.LogWarning("Handle objects should have a single non-Handle sibling");
+        }
     }
 
     void OnMouseDown()

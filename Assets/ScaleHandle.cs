@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TranslationHandle : Handle
+public class ScaleHandle : Handle
 {
     private Vector3 mScaleAxis;
 
-    // TODO: Refactor. "ScaleAxis" doesn't belong in TranslationHandle
     protected override void Start()
     {
         base.Start();
@@ -31,13 +30,12 @@ public class TranslationHandle : Handle
     {
         transform.position = mSubject.transform.position +
             transform.forward *
-            (Vector3.Dot(mScaleAxis, mSubject.transform.localScale) * 0.5f + 1f);
+            (Vector3.Dot(mScaleAxis, mSubject.transform.localScale) * 0.5f + 0.75f);
     }
 
     protected override void DoTransform(float magnitude)
     {
-        mSubject.transform.Translate(
-            transform.forward * magnitude * GetPixelSize(),
-            Space.World);
+        mSubject.transform.localScale +=
+            mScaleAxis * magnitude * GetPixelSize() * 0.5f;
     }
 }

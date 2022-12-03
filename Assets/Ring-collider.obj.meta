@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: d4ad9d1b6c546d24b9f20843f0c88d51
+guid: bdf5c4eeb745d7d4687105f8503582e0
 ModelImporter:
   serializedVersion: 20300
   internalIDToNameTable: []
@@ -7,7 +7,7 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: RingMat
+      name: RingColliderMat
     second: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
   - first:
       type: UnityEngine:Material
