@@ -1,0 +1,13 @@
+fileFormatVersion: 2
+guid: 2581cd9c11b566e4a826bf36c71e4349
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - mTranslationHandle: {fileID: 8259612287919338886, guid: c8fd2e32751959f469f6f68c74ffee7b, type: 3}
+  - mRotationHandle: {fileID: 8259612287919338886, guid: c8fd2e32751959f469f6f68c74ffee7b, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
