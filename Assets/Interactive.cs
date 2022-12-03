@@ -18,22 +18,28 @@ public class Interactive : MonoBehaviour
         };
         foreach (var parameter in parameters)
         {
-            Quaternion rotation = Quaternion.LookRotation(parameter.forward, parameter.up);
-            
+            Quaternion angularHandleRotation = Quaternion.LookRotation(parameter.up, parameter.forward);
+            GameObject rotationHandle = Object.Instantiate(
+                mRotationHandle.gameObject,
+                transform.position,
+                angularHandleRotation,
+                transform);
+            rotationHandle.GetComponent<Handle>().SetColor(parameter.color);
+
+            Quaternion linearHandleRotation = Quaternion.LookRotation(parameter.forward, parameter.up);
             GameObject translationHandle = Object.Instantiate(
                 mTranslationHandle.gameObject,
                 transform.position + parameter.forward,
-                rotation,
+                linearHandleRotation,
                 transform);
             translationHandle.GetComponent<Handle>().SetColor(parameter.color);
 
             GameObject scaleHandle = Object.Instantiate(
                 mScaleHandle.gameObject,
                 transform.position + (parameter.forward * 0.75f),
-                rotation,
+                linearHandleRotation,
                 transform);
             scaleHandle.GetComponent<Handle>().SetColor(parameter.color);
-
         }
     }
 

@@ -7,6 +7,7 @@ using UnityEngine;
 public abstract class Handle : MonoBehaviour
 {
     protected GameObject mSubject;
+    protected Vector3 mLocalMainAxis;
     protected Vector3 mMousePreviousPosition;
 
     /**
@@ -24,21 +25,67 @@ public abstract class Handle : MonoBehaviour
         Material material = gameObject.GetComponent<Renderer>().material;
         material.color = color;
     }
-    
+
     /// <returns>Size of pixel at parent's distance from camera</return>
-    public float GetPixelSize()
+    protected float GetPixelSize()
     {
-        float distance = (Camera.main.transform.position - transform.position).magnitude;
+        float distance = (Camera.main.transform.position - mSubject.transform.position).magnitude;
         float frustumHeight = 2.0f * distance * Mathf.Tan(Camera.main.fieldOfView * 0.5f * Mathf.Deg2Rad);
         return frustumHeight / Camera.main.pixelHeight;
     }
 
-    protected virtual void Start() {
-        foreach (Transform child in transform.parent) {
-            if (child.GetComponent<Handle>() == null) {
+    /**
+    * <summary>
+    * Keeps handle a specified distance away from the subject.
+    * Distance will be scaled by the greatest dimension of the subject
+    * <param name="distance">Distance at max dimension equal to 1</param>
+    * </summary>
+    */
+    protected void MaintainRelativeDistance(float distance)
+    {
+        transform.position = mSubject.transform.position +
+            (transform.forward * (distance * GetMaxMeshDimension()));
+    }
+
+    protected Vector3 GetMeshDimensions() {
+        return Vector3.Scale(
+            mSubject.GetComponent<MeshFilter>().mesh.bounds.size,
+            mSubject.transform.localScale);
+    }
+
+    protected float GetMaxMeshDimension() {
+        Vector3 meshDimensions = GetMeshDimensions();
+        return Mathf.Max(meshDimensions.x, meshDimensions.y, meshDimensions.z);
+    }
+
+    protected virtual void Start()
+    {
+        foreach (Transform child in transform.parent)
+        {
+            if (child.GetComponent<Handle>() == null)
+            {
                 mSubject = child.gameObject;
+                break;
             }
+        }
+        if (mSubject == null) {
             Debug.LogWarning("Handle objects should have a single non-Handle sibling");
+        }
+
+        float dotX = Mathf.Abs(Vector3.Dot(transform.forward, mSubject.transform.right));
+        float dotY = Mathf.Abs(Vector3.Dot(transform.forward, mSubject.transform.up));
+        float dotZ = Mathf.Abs(Vector3.Dot(transform.forward, mSubject.transform.forward));
+        if (dotX >= dotY && dotX >= dotZ)
+        {
+            mLocalMainAxis = Vector3.right;
+        }
+        else if (dotY >= dotZ)
+        {
+            mLocalMainAxis = Vector3.up;
+        }
+        else
+        {
+            mLocalMainAxis = Vector3.forward;
         }
     }
 
