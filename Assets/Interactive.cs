@@ -4,8 +4,8 @@ using UnityEngine;
 
 /**
 * <summary>
-* Set this as the *parent* of an object to spawn UI elements that allow
-* translation, rotation, and scaling on the object's local axes
+* This component spawns UI elements that allow translation, rotation, 
+* and scaling on the object's local axes
 * </summary>
 */
 public class Interactive : MonoBehaviour
@@ -16,6 +16,8 @@ public class Interactive : MonoBehaviour
 
     void Start()
     {
+        Reparent();
+
         var parameters = new List<HandleParams> {
             new HandleParams(Color.red, transform.right, transform.up),
             new HandleParams(Color.green, transform.up, - transform.right),
@@ -30,7 +32,7 @@ public class Interactive : MonoBehaviour
                 mRotationHandle.gameObject,
                 transform.position,
                 angularHandleRotation,
-                transform);
+                transform.parent);
             rotationHandle.GetComponent<Handle>().SetColor(parameter.color);
 
             Quaternion linearHandleRotation = Quaternion.LookRotation(parameter.forward, parameter.up);
@@ -38,16 +40,33 @@ public class Interactive : MonoBehaviour
                 mTranslationHandle.gameObject,
                 transform.position + parameter.forward,
                 linearHandleRotation,
-                transform);
+                transform.parent);
             translationHandle.GetComponent<Handle>().SetColor(parameter.color);
 
             GameObject scaleHandle = Object.Instantiate(
                 mScaleHandle.gameObject,
                 transform.position + (parameter.forward * 0.75f),
                 linearHandleRotation,
-                transform);
+                transform.parent);
             scaleHandle.GetComponent<Handle>().SetColor(parameter.color);
         }
+    }
+
+    /**
+    * <summary>
+    * Creates a new parent at the same position as this object,
+    * and sets this object as a child of the new parent.
+    * If this object already had a parent, it will become a grandparent. CONGRATS!
+    * </summary>
+    */
+    private void Reparent()
+    {
+        Transform oldParent = transform.parent;
+        GameObject newParent = new GameObject(string.Format("Interactive{0}", transform.name));
+        transform.parent = newParent.transform;
+        newParent.transform.position = transform.position;
+        newParent.transform.rotation = transform.rotation;
+        newParent.transform.parent = oldParent;
     }
 
     /// <summary>Specifies color and orientation for handle instantiation</summary>
