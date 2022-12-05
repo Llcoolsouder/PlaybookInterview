@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+* <summary>
+* UI Handle that translates an object along it's Z axis
+* </summary>
+*/
 public class TranslationHandle : Handle
 {
     void Update()
