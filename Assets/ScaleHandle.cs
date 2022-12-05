@@ -2,6 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+* <summary>
+* UI Handle that changes the scale of an object along it's Z axis
+* </summary>
+*/
 public class ScaleHandle : Handle
 {
     void Update()
@@ -11,7 +16,7 @@ public class ScaleHandle : Handle
 
     protected override void DoTransform(float magnitude)
     {
-        mSubject.transform.localScale +=
-            mLocalMainAxis * magnitude * GetPixelSize() * 0.5f;
+        Vector3 deltaScale = mLocalMainAxis * magnitude * GetPixelSize() * 0.5f;
+        mSubject.transform.localScale = Vector3.Max(Vector3.zero, mSubject.transform.localScale + deltaScale);
     }
 }
