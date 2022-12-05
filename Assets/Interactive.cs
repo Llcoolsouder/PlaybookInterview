@@ -2,13 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/**
+* <summary>
+* Set this as the *parent* of an object to spawn UI elements that allow
+* translation, rotation, and scaling on the object's local axes
+* </summary>
+*/
 public class Interactive : MonoBehaviour
 {
     [SerializeField] private Handle mTranslationHandle;
     [SerializeField] private Handle mRotationHandle;
     [SerializeField] private Handle mScaleHandle;
 
-    // Start is called before the first frame update
     void Start()
     {
         var parameters = new List<HandleParams> {
@@ -18,6 +23,8 @@ public class Interactive : MonoBehaviour
         };
         foreach (var parameter in parameters)
         {
+            // Note, rotation handles have *up* axis aligned with their axis of rotation,
+            // but are still interacted with along their forward axis
             Quaternion angularHandleRotation = Quaternion.LookRotation(parameter.up, parameter.forward);
             GameObject rotationHandle = Object.Instantiate(
                 mRotationHandle.gameObject,
@@ -43,9 +50,9 @@ public class Interactive : MonoBehaviour
         }
     }
 
+    /// <summary>Specifies color and orientation for handle instantiation</summary>
     private struct HandleParams
     {
-
         public HandleParams(Color color, Vector3 forward, Vector3 up)
         {
             this.color = color;
@@ -53,8 +60,8 @@ public class Interactive : MonoBehaviour
             this.up = up;
         }
 
-        public Color color { get; }
-        public Vector3 forward { get; }
-        public Vector3 up { get; }
+        public readonly Color color { get; }
+        public readonly Vector3 forward { get; }
+        public readonly Vector3 up { get; }
     }
 }
