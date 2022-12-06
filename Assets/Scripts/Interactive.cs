@@ -57,6 +57,9 @@ public class Interactive : MonoBehaviour
     * Creates a new parent at the same position as this object,
     * and sets this object as a child of the new parent.
     * If this object already had a parent, it will become a grandparent. CONGRATS!
+    * <br/>
+    * This allows us to translate/rotate the parent and move the controls with it, while
+    * scaling this object won't scale the controls.
     * </summary>
     */
     private void Reparent()
